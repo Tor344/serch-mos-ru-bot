@@ -6,4 +6,4 @@ router = Router()
 
 @router.message(Command("start"))
 async def admanel(message: Message):
-    await message.answer("Hello word")
+    await message.answer("Привет. Чтобы точно убедится, что парсер сегодны сработает, нажми на кнопку 'ПАРСИТЬ'")
