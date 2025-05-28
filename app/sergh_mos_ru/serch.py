@@ -43,7 +43,7 @@ def put_ticket1(agent_uid: str, event_id: int, performance_id: str, start_time: 
                 "end_time": end_time,
                 "items": [
                     {
-                        "amount": 1,
+                        "amount": 4,
                         "event_id": event_id,
                         "performance_id": performance_id,
                         "price": 0,
@@ -64,7 +64,8 @@ def put_ticket1(agent_uid: str, event_id: int, performance_id: str, start_time: 
     )
 
     response1 = requests.put(url_put1, json=payload, headers=headers)
-    response1.raise_for_status()
+    print(response1.status_code)
+    print(response1.json())
     return response1.json()
 
 
@@ -82,7 +83,8 @@ def put_ticket2(agent_uid: str, order_id: str) -> None:
     )
 
     response2 = requests.put(url_put2, json=payload2, headers=headers)
-    response2.raise_for_status()
+    print(response2.json())
+    print(response2.status_code)
 
 
 def reg_ticket(event_id: int, agent_uid: str, performance_id: str, date: str, start_time: str, end_time: str, name,
@@ -94,16 +96,18 @@ def reg_ticket(event_id: int, agent_uid: str, performance_id: str, date: str, st
     order_id = response1["id"]
     put_ticket2(agent_uid, order_id)
 
-    ticket_id = response1["tickets"][0]["id"]
+    for ticket in response1["tickets"]:
+        ticket_id = ticket["id"]
 
-    install_r = GET_INSTALL_TICKET.format(
-        agent_uid=agent_uid,
-        order_id=order_id,
-        ticket_id=ticket_id
-    )
+        install_r = GET_INSTALL_TICKET.format(
+            agent_uid=agent_uid,
+            order_id=order_id,
+            ticket_id=ticket_id
+        )
 
-    ticket_data = f"{date} {start_time} {end_time} {install_r}|"
-    script_dir = str(Path(__file__).parent.parent.parent)
-    with open(f"{script_dir}/ticket_list.txt", "a", encoding="utf-8") as file:
-        file.write(ticket_data)
-
+        ticket_data = f"{date} {start_time} {end_time} {install_r}"
+        script_dir = str(Path(__file__).parent.parent.parent)
+        with open(f"{script_dir}/ticket_list.txt", "a", encoding="utf-8") as file:
+            file.write(ticket_data)
+        with open(f"{script_dir}/ticket_list.txt", "a", encoding="utf-8") as file:
+            file.write("|\n")

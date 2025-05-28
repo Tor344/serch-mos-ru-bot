@@ -4,7 +4,14 @@ import requests
 
 from app.sergh_mos_ru.serch import reg_ticket
 
+#Нужный сайт с кортами
+event_id=65305
+agent_uid="museum1038"
 
+#хер пойми что
+# event_id=52808
+# agent_uid="museum2"
+FLAG = False
 GET_EVENTS_URL = (
     "https://tickets.mos.ru/widget/api/widget/getevents"
     "?event_id={event_id}"
@@ -81,14 +88,13 @@ def get_ticket_tarif(performance_id: str, agent_uid: str):
     )
     response = requests.get(tarif_url)
     response.raise_for_status()
-    print(response.json())
     return response.json()['data']["ticket_tariffs"][0]
 
 
 def monitor_mos_ru() -> None:
     """Мониторит сайт и при появлении регистрации проходится по каждому дню и каждому мероприятию, регистрируя билет"""
-    event_id = int(input("Введите event_id: ") or "47833")
-    agent_uid = input("Введите agent_uid: ") or "museum283"
+    # event_id = int(input("Введите event_id: ") or "47833")
+    # agent_uid = input("Введите agent_uid: ") or "museum283"
 
     events = get_events(event_id, agent_uid)
 
@@ -126,7 +132,8 @@ def monitor_mos_ru() -> None:
                 for seat in seats:
                     if seat["performance_id"] != performance["id"]:
                         continue
-
+                    if seat["free_seats_number"] < 1:
+                        continue
                     try:
                         free_seats[date].append(seat)
                     except KeyError:
@@ -135,7 +142,7 @@ def monitor_mos_ru() -> None:
         if not free_seats:
             print("Свободных мест нет")
             return
-
+        FLAG = True
         for date, seats in free_seats.items():
             print(f"Ближайшие свободные места на {date}:")
 
@@ -143,13 +150,18 @@ def monitor_mos_ru() -> None:
                 tariff = get_ticket_tarif(seat["performance_id"], agent_uid)
                 tariff_id = tariff["id"]
                 ticket_type_id = tariff["ticket_type_id"]
-                print(f"Perf. {seat["performance_id"]}: {seat["start_time"]} - {seat["end_time"]}")
-                reg_ticket(event_id, agent_uid, seat["performance_id"], nearest_data.split("T")[0], seat["start_time"],
-                           seat["end_time"], name,tariff_id,ticket_type_id)
-                time.sleep(60)
+                print(f"Perf. {seat["performance_id"]}: {seat["start_time"]} - {seat["end_time"]} , {seat["free_seats_number"]}")
+                try:
+                    reg_ticket(event_id, agent_uid, seat["performance_id"], nearest_data.split("T")[0], seat["start_time"],
+                               seat["end_time"], name,tariff_id,ticket_type_id)
+                except:
+                    print("Ошибка регистрации")
+
             print("\n")
         current_date += timedelta(days=1)
-
+    if FLAG:
+        FLAG == False
+        return True
 
 if __name__ == "__main__":
     monitor_mos_ru()

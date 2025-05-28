@@ -5,3 +5,4 @@ requests~=2.32.3
 lxml~=5.4.0
 beautifulsoup4~=4.13.4
 Faker~=37.3.0
+aiohappyeyeballs~=2.6.1
