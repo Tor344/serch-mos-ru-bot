@@ -1,6 +1,10 @@
-from faker import Faker
 import requests
 from pathlib import Path
+
+from faker import Faker
+
+from config.logger_admin import logger
+
 
 fake = Faker('ru_RU')
 
@@ -27,6 +31,7 @@ GET_INSTALL_TICKET = (
 
 def put_ticket1(agent_uid: str, event_id: int, performance_id: str, start_time: str, end_time, date: str, name: str,
                 tariff_id: int, ticket_type_id: int) -> dict:
+
     person = generate_person()
 
     payload = {
@@ -41,22 +46,57 @@ def put_ticket1(agent_uid: str, event_id: int, performance_id: str, start_time: 
                 "date": date,
                 "start_time": start_time,
                 "end_time": end_time,
-                "items": [
-                    {
-                        "amount": 4,
-                        "event_id": event_id,
-                        "performance_id": performance_id,
-                        "price": 0,
-                        "tariff_id": tariff_id,
-                        "ticket_type_id": ticket_type_id,
-                        "visitor_cat_id": 1
-                    }
-                ],
+
+                "items": [{"ticket_type":
+                               "STANDART",
+                           "visitor_cat_id": 156,
+                           "visit_type_online": "false",
+                           "visitor_cat_name": "Входной билет",
+                           "amount": 4,
+                           "price": 0,
+                           "event_id": event_id,
+                           "tariff_id": tariff_id,
+                           "place_cat_id": "null",
+                           "ticket_type_id": ticket_type_id,
+                           "performance_id": performance_id,
+                           "discount_size": "null",
+                           "second_ticket_discount": "null",
+                           "second_ticket_price": "null"}],
                 "name": name,
                 "spot_id": 110
             }
-        ]
+        ],
+
     }
+
+    # payload = {
+    #     "client": {
+    #         "email": person["email"],
+    #         "name": person["name"],
+    #         "phone_number": person["phone_number"]
+    #     },
+    #     "order_requests": [
+    #         {
+    #             "agent_uid": agent_uid,
+    #             "date": date,
+    #             "start_time": start_time,
+    #             "end_time": end_time,
+    #             "items": [
+    #                 {
+    #                     "amount": 4,
+    #                     "event_id": event_id,
+    #                     "performance_id": performance_id,
+    #                     "price": 0,
+    #                     "tariff_id": tariff_id,
+    #                     "ticket_type_id": ticket_type_id,
+    #                     "visitor_cat_id": 1
+    #                 }
+    #             ],
+    #             "name": name,
+    #             "spot_id": 110
+    #         }
+    #     ]
+    # }
 
     # URL запроса
     url_put1 = PUT_TICKER1.format(
@@ -64,8 +104,9 @@ def put_ticket1(agent_uid: str, event_id: int, performance_id: str, start_time: 
     )
 
     response1 = requests.put(url_put1, json=payload, headers=headers)
-    print(response1.status_code)
-    print(response1.json())
+    if response1.status_code != 200:
+        logger.error(response1.json())
+    logger.info(response1.json())
     return response1.json()
 
 
@@ -83,11 +124,13 @@ def put_ticket2(agent_uid: str, order_id: str) -> None:
     )
 
     response2 = requests.put(url_put2, json=payload2, headers=headers)
-    print(response2.json())
-    print(response2.status_code)
+    if response2.status_code != 200:
+        logger.error(response2.json())
+    logger.info(response2.json())
 
 
-def reg_ticket(event_id: int, agent_uid: str, performance_id: str, date: str, start_time: str, end_time: str, name,
+def reg_ticket(event_id: int, agent_uid: str, performance_id:str,
+               date: str, start_time: str, end_time: str, name,
                tariff_id: int, ticket_type_id: int):
     """Регестрирует билет"""
     response1 = put_ticket1(agent_uid, event_id, performance_id, start_time, end_time, date, name, tariff_id,
@@ -107,7 +150,9 @@ def reg_ticket(event_id: int, agent_uid: str, performance_id: str, date: str, st
 
         ticket_data = f"{date} {start_time} {end_time} {install_r}"
         script_dir = str(Path(__file__).parent.parent.parent)
-        with open(f"{script_dir}/ticket_list.txt", "a", encoding="utf-8") as file:
+        with open(f"{script_dir}/media/ticket_list.txt", "a", encoding="utf-8") as file:
             file.write(ticket_data)
-        with open(f"{script_dir}/ticket_list.txt", "a", encoding="utf-8") as file:
+        with open(f"{script_dir}/media/ticket_list.txt", "a", encoding="utf-8") as file:
             file.write("|\n")
+    return True
+

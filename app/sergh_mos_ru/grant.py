@@ -3,15 +3,19 @@ import time
 import requests
 
 from app.sergh_mos_ru.serch import reg_ticket
+from config.logger_admin import logger
+
 
 #Нужный сайт с кортами
-event_id=65305
-agent_uid="museum1038"
+# event_id=65305
+# agent_uid="museum1038"
+#тестовые
+event_id=68840
+agent_uid="museum162"
 
-#хер пойми что
-# event_id=52808
-# agent_uid="museum2"
 FLAG = False
+
+
 GET_EVENTS_URL = (
     "https://tickets.mos.ru/widget/api/widget/getevents"
     "?event_id={event_id}"
@@ -91,16 +95,14 @@ def get_ticket_tarif(performance_id: str, agent_uid: str):
     return response.json()['data']["ticket_tariffs"][0]
 
 
-def monitor_mos_ru() -> None:
+def monitor_mos_ru() -> bool:
     """Мониторит сайт и при появлении регистрации проходится по каждому дню и каждому мероприятию, регистрируя билет"""
     # event_id = int(input("Введите event_id: ") or "47833")
     # agent_uid = input("Введите agent_uid: ") or "museum283"
-
     events = get_events(event_id, agent_uid)
-
     if not events:
-        print("Мероприятие не найдено")
-        return
+        logger.info("Мероприятие не найдено")
+        return False
 
     event = events[0]
 
@@ -108,18 +110,18 @@ def monitor_mos_ru() -> None:
     nearest_data = event["nearest_date"]
 
     if not nearest_data:
-        print("Нет ближайшей даты проведения")
-        return
+        logger.info("Нет ближайшей даты проведения")
+        return False
 
     end_date = datetime.strptime(end_date_str.split("T")[0], "%Y-%m-%d").date()
     current_date = datetime.strptime(nearest_data.split("T")[0], "%Y-%m-%d").date()
     while current_date <= end_date:
-        print(current_date.strftime("%Y-%m-%d"))  # Форматируем дату в строку
+        logger.info(current_date.strftime("%Y-%m-%d"))  # Форматируем дату в строку
 
         performances = get_performances(event_id, agent_uid, current_date.strftime("%Y-%m-%d"))
 
         if not performances:
-            print("Нет ближайшего проведения мероприятия")
+            logger.info("Нет ближайшего проведения мероприятия")
             current_date += timedelta(days=1)
             continue
 
@@ -132,39 +134,35 @@ def monitor_mos_ru() -> None:
                 for seat in seats:
                     if seat["performance_id"] != performance["id"]:
                         continue
-                    if seat["free_seats_number"] < 1:
-                        continue
                     try:
                         free_seats[date].append(seat)
                     except KeyError:
                         free_seats[date] = [seat]
 
         if not free_seats:
-            print("Свободных мест нет")
-            return
-        FLAG = True
+            logger.info("Свободных мест нет")
+            return False
         for date, seats in free_seats.items():
-            print(f"Ближайшие свободные места на {date}:")
+            logger.info(f"Ближайшие свободные места на {date}:")
 
             for seat in seats:
                 tariff = get_ticket_tarif(seat["performance_id"], agent_uid)
                 tariff_id = tariff["id"]
                 ticket_type_id = tariff["ticket_type_id"]
-                print(f"Perf. {seat["performance_id"]}: {seat["start_time"]} - {seat["end_time"]} , {seat["free_seats_number"]}")
+                logger.info(f"Perf. {seat["performance_id"]}: {seat["start_time"]} - {seat["end_time"]} , {seat["free_seats_number"]}")
                 try:
-                    reg_ticket(event_id, agent_uid, seat["performance_id"], nearest_data.split("T")[0], seat["start_time"],
+                    FLAG = reg_ticket(event_id, agent_uid, seat["performance_id"], nearest_data.split("T")[0], seat["start_time"],
                                seat["end_time"], name,tariff_id,ticket_type_id)
-                except:
-                    print("Ошибка регистрации")
 
-            print("\n")
+                except Exception:
+                    logger.info("Ошибка при регистрации")
+                    FLAG = False
+
+
         current_date += timedelta(days=1)
     if FLAG:
-        FLAG == False
         return True
+    return False
 
 if __name__ == "__main__":
     monitor_mos_ru()
-
-# event_id=52808
-# agent_uid=museum2

@@ -1,24 +1,3 @@
-2025-05-29 12:30:00 13:30:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11827402&ticket_id=30745814|
-2025-05-29 13:30:00 14:30:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11827404&ticket_id=30745816|
-2025-05-29 12:30:00 13:30:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11827406&ticket_id=30745819|
-2025-05-29 13:30:00 14:30:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11827407&ticket_id=30745820|
-2025-05-29 15:00:00 16:00:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11827409&ticket_id=30745823|
-2025-05-29 15:00:00 16:00:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11827410&ticket_id=30745824|
-2025-05-29 12:30:00 13:30:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11827412&ticket_id=30745827|
-2025-05-29 12:30:00 13:30:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11827414&ticket_id=30745829|
-2025-05-29 13:30:00 14:30:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11827415&ticket_id=30745830|
-2025-05-29 12:30:00 13:30:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11827430&ticket_id=30745881|
-2025-05-29 13:30:00 14:30:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11827431&ticket_id=30745882|
-2025-05-29 13:30:00 14:30:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11827432&ticket_id=30745883|
-2025-05-29 15:00:00 16:00:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11827433&ticket_id=30745884|
-2025-05-29 15:00:00 16:00:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11827436&ticket_id=30745889|
-2025-05-29 12:30:00 13:30:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11827438&ticket_id=30745891|
-2025-05-29 12:30:00 13:30:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11827441&ticket_id=30745900|
-2025-05-29 13:30:00 14:30:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11827443&ticket_id=30745907|
-2025-05-29 12:30:00 13:30:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11827465&ticket_id=30745969|
-2025-05-29 13:30:00 14:30:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11827466&ticket_id=30745970|
-2025-05-29 13:30:00 14:30:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11827467&ticket_id=30745971|
-2025-05-29 15:00:00 16:00:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11827470&ticket_id=30745978|
-
-
-https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11820402&ticket_id=30713694 30707987
+1221|
+1221|
+1221|

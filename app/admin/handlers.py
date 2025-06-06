@@ -75,7 +75,7 @@ async def admin_panel(message: Message):
 
 
 @router.message(F.text == "Отписаться от уведомлений начала парсинга")
-async def unsubscribe_from_notifications(message: Message):
+async def admin_panel(message: Message):
     link_file = os.path.join(os.getcwd(), "media", "id_subscription.json")
 
     try:
