@@ -151,7 +151,7 @@ def reg_ticket(event_id: int, agent_uid: str, performance_id:str,
             ticket_id=ticket_id
         )
 
-        ticket_data = f"{date} {start_time} {end_time} {install_r}"
+        ticket_data = f"{dey_date} {start_time} {end_time} {install_r}"
         with open(f"{script_dir}/media/ticket_list.txt", "a", encoding="utf-8") as file:
             file.write(ticket_data)
         with open(f"{script_dir}/media/ticket_list.txt", "a", encoding="utf-8") as file:
