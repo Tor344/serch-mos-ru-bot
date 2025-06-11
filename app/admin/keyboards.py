@@ -6,7 +6,9 @@ admin_button = ReplyKeyboardMarkup(resize_keyboard=True,keyboard=[
     [KeyboardButton(text="Отписаться от уведомлений начала парсинга")],
     [KeyboardButton(text="Получить список админов")],
     [KeyboardButton(text="Добавить админа")],
-    [KeyboardButton(text="Удалить админа")]
+    [KeyboardButton(text="Удалить админа")],
+    [KeyboardButton(text="Получить сордированные билеты")]
+
 ])
 
 remove_keybord = ReplyKeyboardRemove()

@@ -104,8 +104,7 @@ def put_ticket1(agent_uid: str, event_id: int, performance_id: str, start_time: 
     )
 
     response1 = requests.put(url_put1, json=payload, headers=headers)
-    if response1.status_code != 200:
-        logger.error(response1.json())
+
     logger.info(response1.json())
     return response1.json()
 
@@ -131,7 +130,7 @@ def put_ticket2(agent_uid: str, order_id: str) -> None:
 
 def reg_ticket(event_id: int, agent_uid: str, performance_id:str,
                date: str, start_time: str, end_time: str, name,
-               tariff_id: int, ticket_type_id: int):
+               tariff_id: int, ticket_type_id: int, dey_date: str):
     """Регестрирует билет"""
     response1 = put_ticket1(agent_uid, event_id, performance_id, start_time, end_time, date, name, tariff_id,
                             ticket_type_id)
@@ -139,6 +138,10 @@ def reg_ticket(event_id: int, agent_uid: str, performance_id:str,
     order_id = response1["id"]
     put_ticket2(agent_uid, order_id)
 
+    #путь к корневой папки проекта
+    script_dir = str(Path(__file__).parent.parent.parent)
+
+    #Запись билетов в файл
     for ticket in response1["tickets"]:
         ticket_id = ticket["id"]
 
@@ -149,10 +152,12 @@ def reg_ticket(event_id: int, agent_uid: str, performance_id:str,
         )
 
         ticket_data = f"{date} {start_time} {end_time} {install_r}"
-        script_dir = str(Path(__file__).parent.parent.parent)
         with open(f"{script_dir}/media/ticket_list.txt", "a", encoding="utf-8") as file:
             file.write(ticket_data)
         with open(f"{script_dir}/media/ticket_list.txt", "a", encoding="utf-8") as file:
-            file.write("|\n")
+            file.write("\n")
+
+    with open(f"{script_dir}/media/ticket_list.txt", "a", encoding="utf-8") as file:
+        file.write("|\n")
     return True
 

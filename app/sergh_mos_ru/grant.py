@@ -7,11 +7,11 @@ from config.logger_admin import logger
 
 
 #Нужный сайт с кортами
-# event_id=65305
-# agent_uid="museum1038"
+event_id=65305
+agent_uid="museum1038"
 #тестовые
-event_id=68840
-agent_uid="museum162"
+# event_id=68840
+# agent_uid="museum162"
 
 FLAG = False
 
@@ -152,7 +152,7 @@ def monitor_mos_ru() -> bool:
                 logger.info(f"Perf. {seat["performance_id"]}: {seat["start_time"]} - {seat["end_time"]} , {seat["free_seats_number"]}")
                 try:
                     FLAG = reg_ticket(event_id, agent_uid, seat["performance_id"], nearest_data.split("T")[0], seat["start_time"],
-                               seat["end_time"], name,tariff_id,ticket_type_id)
+                               seat["end_time"], name,tariff_id,ticket_type_id,date)
 
                 except Exception:
                     logger.info("Ошибка при регистрации")
@@ -160,9 +160,7 @@ def monitor_mos_ru() -> bool:
 
 
         current_date += timedelta(days=1)
-    if FLAG:
-        return True
-    return False
+    return FLAG
 
 if __name__ == "__main__":
     monitor_mos_ru()

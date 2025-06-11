@@ -1,0 +1,10 @@
+
+2025-06-05 12:30:00 13:30:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11961295&ticket_id=31125695
+2025-06-05 12:30:00 13:30:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11961295&ticket_id=31125693
+2025-06-05 12:30:00 13:30:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11961295&ticket_id=31125691
+2025-06-05 12:30:00 13:30:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11961295&ticket_id=31125690|
+
+2025-06-05 12:30:00 13:30:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11961313&ticket_id=31125745
+2025-06-05 12:30:00 13:30:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11961313&ticket_id=31125744
+2025-06-05 12:30:00 13:30:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11961313&ticket_id=31125743
+2025-06-05 12:30:00 13:30:00 https://tickets.mos.ru/widget/api/widget/ticket?agent_id=museum1038&order_id=11961313&ticket_id=31125742|
