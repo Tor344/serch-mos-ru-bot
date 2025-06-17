@@ -7,6 +7,7 @@ from datetime import datetime
 from aiogram import Bot, Dispatcher
 
 import config.settings as set
+
 from app.start.handlers import router as start_router
 from app.user.handlers import router as user_router
 from app.admin.handlers import router as admin_router
@@ -49,8 +50,9 @@ async def monitor_mos_ru_loop(bot)-> None:
     """Вызывает функцию для мониторинга сайта
        в случает True вызывает функцию для сообщения о мониторинге"""
     while True:
+
         now = datetime.now()
-        if datetime.weekday(now) == 4:
+        if datetime.weekday(now) == 3:
             logger.info("Запускаю мониторинг")
             try:
                 flag = await asyncio.to_thread(monitor_mos_ru)
@@ -58,7 +60,7 @@ async def monitor_mos_ru_loop(bot)-> None:
                     await send_notifications(bot)
             except Exception as e:
                 logger.warning(f"Ошибка мониторинга: {e}")
-        await asyncio.sleep(80)
+        await asyncio.sleep(int(set.SPEAD_SERCH))
 
 
 if __name__ == "__main__":

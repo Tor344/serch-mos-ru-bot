@@ -1,4 +1,3 @@
-import logging
 import os
 import json
 
@@ -7,6 +6,7 @@ from aiogram.types import Message,FSInputFile
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 
+from config.logger_admin import logger
 from app.admin.keyboards import admin_button,remove_keybord
 from app.admin.fms_state import imput_data
 
@@ -19,7 +19,7 @@ async def admin_panel(message: Message):
     link_file = str(os.getcwd()) + "/media/admin.json"
     with open(link_file, "r", encoding="utf-8") as file:
         user_agents = json.load(file)
-    user_name = "@"+ message.from_user.username
+    user_name = "@" + str(message.from_user.username)
     if user_name in list(user_agents.values()):
         await message.answer("В админ панели администраторы могут:\n"
                              "1) Получать файл с билетами\n"
@@ -29,6 +29,7 @@ async def admin_panel(message: Message):
                              "5) Добавить админа\n"
                              "6) Удалить админа\n"
                              "7) Получать отсортированный файл с билетами\n"
+                             "8) Выбрать промежуток времени для регистрирование 120 билетов\n"
                             ,reply_markup=admin_button)
     else:
         await message.answer("Вас нет в списке админов")
@@ -196,8 +197,28 @@ async def admin_panel(message: Message, state: FSMContext):
         await state.clear()
 
 
+@router.message(F.text == "Выбрать промежуток времени для регистрирование 120 билетов")
+async def admin_panel(message: Message,state:FSMContext):
+    from config.settings import SPEAD_SERCH
+    await message.answer(f"Введите промежуток времени для регистрирование 120 билетов (пред идущее значение {SPEAD_SERCH})",reply_markup=remove_keybord)
+    await state.set_state(imput_data.input_time)
 
 
+@router.message(imput_data.input_time)
+async def admin_panel(message: Message, state: FSMContext):
+    try:
+        if int(message.text)  < 0:
+            await message.answer("Число неможет быть меньше 0")
+            return
+        import config.settings
+        config.settings.SPEAD_SERCH = int(message.text)
+        await message.answer(f"промежуток времени для регистрирование 120 билетов был изменен на {config.settings.SPEAD_SERCH}",reply_markup=admin_button)
+    except Exception as e:
+        logger.error(f"{e}")
+        await message.answer(f"Произошла ошибка {e}",reply_markup=admin_button)
+    finally:
+        if (int(message.text) > 0):
+            await state.clear()
 
 
 
